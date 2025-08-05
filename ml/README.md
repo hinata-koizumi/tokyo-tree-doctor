@@ -1,4 +1,4 @@
-# 機械学習
+# 機械学習 (ML)
 
 Tokyo Tree Doctorの機械学習コンポーネント
 
@@ -9,7 +9,7 @@ Tokyo Tree Doctorの機械学習コンポーネント
 ## ディレクトリ構造
 
 ```
-machine_learning/
+ml/
 ├── ml_models/           # 機械学習モデル
 │   ├── tree_classification/    # 樹木分類モデル
 │   ├── health_detection/       # 健康状態検出モデル

@@ -11,7 +11,7 @@ tokyo-tree-doctor/
 ├── docs/                # ドキュメント
 ├── tests/               # テストファイル
 │
-├── machine_learning/    # 機械学習コンポーネント
+├── ml/                  # 機械学習コンポーネント
 │   ├── ml_models/           # 機械学習モデル
 │   ├── ml_data/             # 機械学習データ
 │   ├── ml_notebooks/        # 機械学習ノートブック
@@ -44,8 +44,8 @@ tokyo-tree-doctor/
 
 ### 機械学習開発
 ```bash
-cd machine_learning
-# 詳細は machine_learning/README.md を参照
+cd ml
+# 詳細は ml/README.md を参照
 ```
 
 ### ソフトウェア開発
