@@ -6,16 +6,15 @@ AIとドローン技術を活用した包括的な樹木健康監視・診断シ
 
 ```
 tokyo-tree-doctor/
-├── assets/              # 画像、モデル、動画
-├── config/              # 設定ファイル
-│
 ├── ml/                  # 機械学習コンポーネント
 │   ├── ml_models/           # 機械学習モデル
 │   ├── ml_data/             # 機械学習データ
 │   ├── ml_notebooks/        # 機械学習ノートブック
 │   ├── ml_scripts/          # 機械学習スクリプト
 │   ├── tests/               # 機械学習テスト
-│   └── docs/                # 機械学習ドキュメント
+│   ├── docs/                # 機械学習ドキュメント
+│   ├── config/              # 機械学習設定
+│   └── assets/              # 機械学習アセット（画像、モデル、動画）
 │
 └── software/            # ソフトウェアコンポーネント
     ├── software_apps/       # ソフトウェアアプリケーション
@@ -23,7 +22,9 @@ tokyo-tree-doctor/
     ├── software_api/        # APIサービス
     ├── software_utils/      # ユーティリティ
     ├── tests/               # ソフトウェアテスト
-    └── docs/                # ソフトウェアドキュメント
+    ├── docs/                # ソフトウェアドキュメント
+    ├── config/              # ソフトウェア設定
+    └── assets/              # ソフトウェアアセット（UI、アイコン、動画）
 ```
 
 ## 機能
