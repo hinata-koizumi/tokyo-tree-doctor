@@ -11,49 +11,17 @@ tokyo-tree-doctor/
 ├── docs/                # ドキュメント
 ├── tests/               # テストファイル
 │
-├── ml_models/           # 機械学習モデル
-│   ├── tree_classification/    # 樹木分類モデル
-│   ├── health_detection/       # 健康状態検出モデル
-│   ├── disease_prediction/     # 病気予測モデル
-│   └── risk_assessment/        # リスク評価モデル
+├── machine_learning/    # 機械学習コンポーネント
+│   ├── ml_models/           # 機械学習モデル
+│   ├── ml_data/             # 機械学習データ
+│   ├── ml_notebooks/        # 機械学習ノートブック
+│   └── ml_scripts/          # 機械学習スクリプト
 │
-├── ml_data/             # 機械学習データ
-│   ├── raw/             # 生データ
-│   ├── processed/       # 処理済みデータ
-│   ├── training/        # 学習用データ
-│   └── validation/      # 検証用データ
-│
-├── ml_notebooks/        # 機械学習ノートブック
-│   ├── data_exploration/       # データ探索
-│   ├── model_development/      # モデル開発
-│   ├── model_evaluation/       # モデル評価
-│   └── experiments/            # 実験
-│
-├── ml_scripts/          # 機械学習スクリプト
-│   ├── data_preprocessing/     # データ前処理
-│   ├── model_training/         # モデル学習
-│   ├── model_inference/        # モデル推論
-│   └── evaluation/             # 評価スクリプト
-│
-├── software_apps/       # ソフトウェアアプリケーション
-│   ├── drone_control/          # ドローン制御アプリ
-│   ├── mobile_app/             # モバイルアプリ
-│   └── desktop_app/            # デスクトップアプリ
-│
-├── software_web/        # Webアプリケーション
-│   ├── frontend/               # フロントエンド
-│   ├── backend/                # バックエンド
-│   └── dashboard/              # ダッシュボード
-│
-├── software_api/        # APIサービス
-│   ├── rest_api/               # REST API
-│   ├── graphql_api/            # GraphQL API
-│   └── websocket/              # WebSocket
-│
-└── software_utils/      # ユーティリティ
-    ├── data_collection/        # データ収集
-    ├── image_processing/       # 画像処理
-    └── reporting/              # レポート生成
+└── software/            # ソフトウェアコンポーネント
+    ├── software_apps/       # ソフトウェアアプリケーション
+    ├── software_web/        # Webアプリケーション
+    ├── software_api/        # APIサービス
+    └── software_utils/      # ユーティリティ
 ```
 
 ## 機能
@@ -71,6 +39,20 @@ tokyo-tree-doctor/
 - モバイル・デスクトップアプリ
 - REST/GraphQL API
 - データ処理パイプライン
+
+## 開発ガイド
+
+### 機械学習開発
+```bash
+cd machine_learning
+# 詳細は machine_learning/README.md を参照
+```
+
+### ソフトウェア開発
+```bash
+cd software
+# 詳細は software/README.md を参照
+```
 
 ## 始め方
 
