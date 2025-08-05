@@ -11,6 +11,7 @@ tokyo-tree-doctor/
 │   │   ├── images/
 │   │   └── videos/
 │   ├── config/          # 機械学習設定
+│   ├── data/            # 機械学習データ
 │   ├── docs/            # 機械学習ドキュメント
 │   └── tests/           # 機械学習テスト
 │
@@ -19,6 +20,7 @@ tokyo-tree-doctor/
     │   ├── images/
     │   └── videos/
     ├── config/          # ソフトウェア設定
+    ├── data/            # ソフトウェアデータ
     ├── docs/            # ソフトウェアドキュメント
     └── tests/           # ソフトウェアテスト
 ```
