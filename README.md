@@ -9,19 +9,20 @@ tokyo-tree-doctor/
 ├── assets/              # 画像、モデル、動画
 ├── config/              # 設定ファイル
 ├── docs/                # ドキュメント
-├── tests/               # テストファイル
 │
 ├── ml/                  # 機械学習コンポーネント
 │   ├── ml_models/           # 機械学習モデル
 │   ├── ml_data/             # 機械学習データ
 │   ├── ml_notebooks/        # 機械学習ノートブック
-│   └── ml_scripts/          # 機械学習スクリプト
+│   ├── ml_scripts/          # 機械学習スクリプト
+│   └── tests/               # 機械学習テスト
 │
 └── software/            # ソフトウェアコンポーネント
     ├── software_apps/       # ソフトウェアアプリケーション
     ├── software_web/        # Webアプリケーション
     ├── software_api/        # APIサービス
-    └── software_utils/      # ユーティリティ
+    ├── software_utils/      # ユーティリティ
+    └── tests/               # ソフトウェアテスト
 ```
 
 ## 機能
@@ -52,6 +53,23 @@ cd ml
 ```bash
 cd software
 # 詳細は software/README.md を参照
+```
+
+## テスト
+
+### 機械学習テスト
+```bash
+cd ml/tests
+python -m pytest
+# 詳細は ml/tests/README.md を参照
+```
+
+### ソフトウェアテスト
+```bash
+cd software/tests
+npm test  # フロントエンド
+python -m pytest  # バックエンド
+# 詳細は software/tests/README.md を参照
 ```
 
 ## 始め方
