@@ -14,7 +14,9 @@ tokyo-tree-doctor/
 │   ├── tests/               # 機械学習テスト
 │   ├── docs/                # 機械学習ドキュメント
 │   ├── config/              # 機械学習設定
-│   └── assets/              # 機械学習アセット（画像、モデル、動画）
+│   └── assets/              # 機械学習アセット
+│       ├── images/          # 機械学習用画像
+│       └── videos/          # 機械学習用動画
 │
 └── software/            # ソフトウェアコンポーネント
     ├── software_apps/       # ソフトウェアアプリケーション
@@ -24,7 +26,9 @@ tokyo-tree-doctor/
     ├── tests/               # ソフトウェアテスト
     ├── docs/                # ソフトウェアドキュメント
     ├── config/              # ソフトウェア設定
-    └── assets/              # ソフトウェアアセット（UI、アイコン、動画）
+    └── assets/              # ソフトウェアアセット
+        ├── images/          # ソフトウェア用画像（UI、アイコン等）
+        └── videos/          # ソフトウェア用動画（デモ、チュートリアル等）
 ```
 
 ## 機能
@@ -42,6 +46,19 @@ tokyo-tree-doctor/
 - モバイル・デスクトップアプリ
 - REST/GraphQL API
 - データ処理パイプライン
+
+## 開発環境
+
+### システム情報
+- **OS**: macOS 24.5.0 (darwin)
+- **シェル**: /bin/zsh
+- **ワークスペース**: /Users/koizumihinata/tokyo-tree-doctor
+
+### 必要なツール
+- **Git**: バージョン管理
+- **Python**: 機械学習開発
+- **Node.js**: ソフトウェア開発
+- **Docker**: コンテナ化
 
 ## 開発ガイド
 
@@ -90,9 +107,28 @@ cd software/docs
 # 詳細は software/docs/README.md を参照
 ```
 
+## セットアップ
+
+### 初期セットアップ
+```bash
+# リポジトリのクローン
+git clone https://github.com/hinata-koizumi/tokyo-tree-doctor.git
+cd tokyo-tree-doctor
+
+# 機械学習環境のセットアップ
+cd ml
+python -m venv ml_env
+source ml_env/bin/activate
+pip install -r requirements.txt
+
+# ソフトウェア環境のセットアップ
+cd ../software
+npm install
+```
+
 ## 始め方
 
-[ドキュメントとセットアップ手順はここに追加予定]
+[詳細なセットアップ手順は各コンポーネントのREADME.mdを参照]
 
 ## ライセンス
 
