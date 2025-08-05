@@ -1,37 +1,37 @@
 # Tokyo Tree Doctor
 
-A comprehensive tree health monitoring and diagnosis system using AI and drone technology.
+AIとドローン技術を活用した包括的な樹木健康監視・診断システム。
 
-## Project Structure
+## プロジェクト構造
 
 ```
 tokyo-tree-doctor/
-├── assets/          # Images, models, and videos
-├── config/          # Configuration files
-├── data/            # Data storage (raw, processed, models)
-├── docs/            # Documentation
-├── notebooks/       # Jupyter notebooks for analysis
-├── scripts/         # Utility scripts
-├── src/             # Source code
-│   ├── ai_analysis/     # AI analysis modules
-│   ├── dashboard/       # Web dashboard
-│   ├── data_pipeline/   # Data processing pipeline
-│   └── drone_diagnosis/ # Drone-based diagnosis
-└── tests/           # Test files
+├── assets/          # 画像、モデル、動画
+├── config/          # 設定ファイル
+├── data/            # データストレージ（生データ、処理済み、モデル）
+├── docs/            # ドキュメント
+├── notebooks/       # 分析用Jupyterノートブック
+├── scripts/         # ユーティリティスクリプト
+├── src/             # ソースコード
+│   ├── ai_analysis/     # AI分析モジュール
+│   ├── dashboard/       # Webダッシュボード
+│   ├── data_pipeline/   # データ処理パイプライン
+│   └── drone_diagnosis/ # ドローン診断
+└── tests/           # テストファイル
 ```
 
-## Features
+## 機能
 
-- AI-powered tree health analysis
-- Drone-based image collection
-- Real-time monitoring dashboard
-- Risk assessment and scoring
-- Data pipeline for processing tree images
+- AI駆動の樹木健康分析
+- ドローンによる画像収集
+- リアルタイム監視ダッシュボード
+- リスク評価とスコアリング
+- 樹木画像処理用データパイプライン
 
-## Getting Started
+## 始め方
 
-[Documentation and setup instructions will be added here]
+[ドキュメントとセットアップ手順はここに追加予定]
 
-## License
+## ライセンス
 
-[License information to be added] 
+[ライセンス情報はここに追加予定] 
