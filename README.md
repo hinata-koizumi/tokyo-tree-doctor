@@ -8,21 +8,22 @@ AIとドローン技術を活用した包括的な樹木健康監視・診断シ
 tokyo-tree-doctor/
 ├── assets/              # 画像、モデル、動画
 ├── config/              # 設定ファイル
-├── docs/                # ドキュメント
 │
 ├── ml/                  # 機械学習コンポーネント
 │   ├── ml_models/           # 機械学習モデル
 │   ├── ml_data/             # 機械学習データ
 │   ├── ml_notebooks/        # 機械学習ノートブック
 │   ├── ml_scripts/          # 機械学習スクリプト
-│   └── tests/               # 機械学習テスト
+│   ├── tests/               # 機械学習テスト
+│   └── docs/                # 機械学習ドキュメント
 │
 └── software/            # ソフトウェアコンポーネント
     ├── software_apps/       # ソフトウェアアプリケーション
     ├── software_web/        # Webアプリケーション
     ├── software_api/        # APIサービス
     ├── software_utils/      # ユーティリティ
-    └── tests/               # ソフトウェアテスト
+    ├── tests/               # ソフトウェアテスト
+    └── docs/                # ソフトウェアドキュメント
 ```
 
 ## 機能
@@ -47,12 +48,14 @@ tokyo-tree-doctor/
 ```bash
 cd ml
 # 詳細は ml/README.md を参照
+# ドキュメントは ml/docs/ を参照
 ```
 
 ### ソフトウェア開発
 ```bash
 cd software
 # 詳細は software/README.md を参照
+# ドキュメントは software/docs/ を参照
 ```
 
 ## テスト
@@ -70,6 +73,20 @@ cd software/tests
 npm test  # フロントエンド
 python -m pytest  # バックエンド
 # 詳細は software/tests/README.md を参照
+```
+
+## ドキュメント
+
+### 機械学習ドキュメント
+```bash
+cd ml/docs
+# 詳細は ml/docs/README.md を参照
+```
+
+### ソフトウェアドキュメント
+```bash
+cd software/docs
+# 詳細は software/docs/README.md を参照
 ```
 
 ## 始め方
