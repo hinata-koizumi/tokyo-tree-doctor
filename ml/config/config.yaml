@@ -1,6 +1,0 @@
-general:
-  seed: 42
-
-data:
-  image_dir: "tokyo-tree-doctor/ml/assets/images"
-  video_dir: "tokyo-tree-doctor/ml/assets/videos"
