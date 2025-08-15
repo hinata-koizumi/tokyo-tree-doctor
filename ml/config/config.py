@@ -2,59 +2,67 @@
 RANDOM_SEED = 42
 
 # 3クラスの事前確率（合計1.0）
-CLASS_PRIORS = {"H": 0.5, "E": 0.3, "D": 0.2}
+CLASS_PRIORS = {
+    "危険":   0.20,
+    "要注意": 0.30,
+    "健康":   0.45,
+    "N/A":    0.05,
+}
 
-# クラス×特徴ごとのレンジ
+# クラス別の温度レンジ（単位：摂氏）
+# ここはプロジェクトの仮説・文献に合わせて調整してください。
 FEATURE_RANGES = {
-    "H": {
-        "green_ratio":        (0.45, 0.85),  
-        "yellow_brown_ratio": (0.00, 0.35), 
-        "color_std":          (0.05, 0.18), 
-        "hue_mean":           (75, 130),   
-        "ndvi_avg":           (0.55, 0.88),  
-        "ndvi_std":           (0.03, 0.12),  
-        "ndvi_min":           (0.30, 0.75),
-        "ndvi_max":           (0.70, 0.95),
-        "leaf_temp_mean":     (24, 33),     
+    "危険": {
+        "leaf_temp_mean":   (30.0, 36.0),
+        "leaf_temp_min":    (28.0, 33.0),
+        "leaf_temp_max":    (34.0, 40.0),
+        "leaf_temp_median": (29.5, 36.5),
+        "leaf_temp_std":    (0.8,  2.5),
     },
-    "E": {
-        "green_ratio":        (0.25, 0.75),
-        "yellow_brown_ratio": (0.10, 0.65),
-        "color_std":          (0.08, 0.22),
-        "hue_mean":           (55, 115),
-        "ndvi_avg":           (0.30, 0.80),
-        "ndvi_std":           (0.05, 0.20),
-        "ndvi_min":           (0.15, 0.60),
-        "ndvi_max":           (0.55, 0.92),
-        "leaf_temp_mean":     (26, 36),
+    "要注意": {
+        "leaf_temp_mean":   (27.0, 32.0),
+        "leaf_temp_min":    (25.0, 30.0),
+        "leaf_temp_max":    (31.0, 36.0),
+        "leaf_temp_median": (26.5, 32.5),
+        "leaf_temp_std":    (0.6,  2.0),
     },
-    "D": {
-        "green_ratio":        (0.05, 0.60),  
-        "yellow_brown_ratio": (0.20, 0.90),
-        "color_std":          (0.06, 0.24),  
-        "hue_mean":           (35, 105), 
-        "ndvi_avg":           (0.05, 0.60),
-        "ndvi_std":           (0.04, 0.16),
-        "ndvi_min":           (0.05, 0.45),
-        "ndvi_max":           (0.45, 0.85),
-        "leaf_temp_mean":     (28, 41),
+    "健康": {
+        "leaf_temp_mean":   (22.0, 27.0),
+        "leaf_temp_min":    (20.0, 25.0),
+        "leaf_temp_max":    (26.0, 31.0),
+        "leaf_temp_median": (21.5, 27.5),
+        "leaf_temp_std":    (0.4,  1.6),
+    },
+    "N/A": {
+        # N/Aは空欄出力。値は使いませんが項目は残しておくと安心
+        "leaf_temp_mean":   (None, None),
+        "leaf_temp_min":    (None, None),
+        "leaf_temp_max":    (None, None),
+        "leaf_temp_median": (None, None),
+        "leaf_temp_std":    (None, None),
     },
 }
 
-# 特徴ごとのノイズσと“はみ出し”率
+# ノイズ/クリップなどの挙動
 NOISE = {
-    "green_ratio":          0.10,
-    "yellow_brown_ratio":   0.08,
-    "color_std":            0.05,
-    "hue_mean":             10.0,  #（度）
-    "ndvi_avg":             0.1,
-    "ndvi_std":             0.13,
-    "ndvi_min":             0.17,
-    "ndvi_max":             0.16,
-    "leaf_temp_mean":       2.3,   #（℃）
-    "spillover_rate":       0.35,
-    "ndvi_avg_spill":       0.28,
-    "leaf_temp_mean_spill": 5.0,
+    # ガウスノイズのσ（列ごと）
+    "leaf_temp_mean":   0.4,
+    "leaf_temp_min":    0.3,
+    "leaf_temp_max":    0.5,
+    "leaf_temp_median": 0.3,
+    "leaf_temp_std":    0.15,
+
+    # スピルオーバー（外乱混入）の割合と強さ
+    "spillover_rate":      0.05,  # 5%に追加ノイズ
+    "leaf_temp_spill_sigma": 0.8, # そのときのσ
+
+    # 物理的クリップ（温度の下限/上限）
+    "physical_clip_lo": 15.0,
+    "physical_clip_hi": 50.0,
+
+    # 標準偏差カラムのクリップ
+    "std_clip_lo": 0.0,
+    "std_clip_hi": 10.0,
 }
 
 # 簡易相関の係数
@@ -67,6 +75,6 @@ CORRELATION = {
 VARI_HEALTHY_MIN   = 0.17   # 健康の下限（論文準拠）
 VARI_WARN_MIN      = 0.06   # 要注意の下限（論文準拠）
 VARI_WARN_SPLIT    = 0.07   # ←要注意(0.06–0.16)の内部で危険に寄せる閾値（調整点）
-MIN_VEG_RATIO_VALID = 0.05  # ←植生被覆率がこれ未満ならN/A（3%）
+MIN_VEG_RATIO_VALID = 0.75  # ←植生被覆率がこれ未満ならN/A（3%）
 MIN_VEG_PIXELS_ABS  = 30    # ←有効にするための最低植生画素数（絶対）
 MIN_VEG_PIXELS_REL  = 0.002 # ←同（相対）：タイル画素の0.2%
