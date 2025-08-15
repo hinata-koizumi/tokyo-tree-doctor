@@ -2,144 +2,98 @@
 
 AIとドローン技術を活用した、樹木の健康状態を監視・診断するための包括的なシステムです。
 
-このリポジトリは、**機械学習領域 (`ml`)** と **Webアプリケーション領域 (`software`)** の2つのコンポーネントに明確に分離されています。
 
------
+このプロジェクトは **機械学習 (`ml`)**・**バックエンド (`backend`)**・**フロントエンド (`frontend`)**・**インフラ (`infrastructure`)** の 4 つのトップレベルディレクトリで構成されています。
 
-## 機械学習領域 (`ml`)
+---
 
-機械学習モデルの研究、実験、および関連資産の管理を行うディレクトリです。
+## 🔖 Repository Layout
 
-  - **役割**: データ分析、モデルの学習・評価、実験管理など、データサイエンスに関連するタスクを集約します。
-  - **現状**: Webアプリケーションとは直接接続されておらず、独立した環境として機能します。将来的に、ここで作成されたモデルがAPI経由でアプリケーションに提供される予定です。
-
-<!-- end list -->
-
-```sh
-ml/
-├── assets/     # モデルや画像などの資産
-├── config/     # 設定ファイル
-├── data/       # データセット
-├── docs/       # ドキュメント
-└── tests/      # テストコード
+```text
+tokyo-tree-doctor/
+├── ml/              # 画像をタイル分割して診断するコア ML ロジック
+├── backend/         # FastAPI + RQ Worker + SQLAlchemy/PostGIS
+├── frontend/        # Vite + React + Leaflet (地図 UI)
+└── infrastructure/  # docker-compose.yml などローカル E2E 用インフラ定義
 ```
 
------
+---
 
-## Webアプリケーション領域 (`software`)
+## 🚀 Quick Start (Docker Compose)
 
-ユーザーが実際に操作するWebアプリケーション本体（バックエンド・フロントエンド）のディレクトリです。
-
-  - **役割**: 診断リクエストの受付、結果の表示、ユーザーインタラクションの管理など、サービス提供の役割を担います。
-  - **構成**: バックエンドは**FastAPI**、フロントエンドは**Vite + React**で構築されています。
-
-### セットアップ
-
-#### 前提条件
-
-  - **Python**: `3.10` 以上 ( `3.11` を推奨)
-  - **Node.js**: `18` 以上 / npm
-  - **ポート**: バックエンド `8000`, フロントエンド `5173` (デフォルト)
-
-#### 1. バックエンド (FastAPI) の起動
+ローカル PC に Docker / Docker Compose が入っていれば、**ワンコマンドで全サービスが起動**します。
 
 ```bash
-# 仮想環境の作成と有効化（未作成の場合）
-python -m venv .venv
-source .venv/bin/activate
+# プロジェクトルート
+docker compose -f infrastructure/docker-compose.yml up -d
 
-# 依存パッケージのインストール
-pip install -r software/backend/requirements.txt
-
-# 開発サーバーの起動（プロジェクトルートから）
-# app パッケージが software/backend/app にあるため、--app-dir を指定します
-uvicorn app.main:app --app-dir software/backend --reload --host 0.0.0.0 --port 8000
-
-# 必要に応じて監視対象ディレクトリを制限（フロントエンドのnode_modulesによるリロードを防ぐ）
-# uvicorn app.main:app --app-dir software/backend --reload --reload-dir software/backend --host 0.0.0.0 --port 8000
+# ブラウザで確認
+open http://localhost:8000/docs        # FastAPI (Swagger UI)
+open http://localhost:9001             # MinIO Console (ID/PW: minio / minio123)
 ```
 
-> 起動後、 `http://127.0.0.1:8000/docs` からAPIドキュメントを確認できます。
-> CORS は開発向けに既定で有効（`http://127.0.0.1:5173`, `http://localhost:5173` を許可）。
+起動するサービス | ポート | 役割
++----------------|-------|----------------------------------
+API (FastAPI)   | 8000  | `/api/v1/*` REST エンドポイント
+RQ Worker       | —     | 画像解析の非同期ジョブ実行
+PostgreSQL + PostGIS | 5432 | 診断結果 (`analysis_jobs`, `area_tiles`) 永続化
+Redis           | 6379  | ジョブキュー
+MinIO           | 9000/9001 | S3 互換オブジェクトストレージ（画像アップロード）
 
-#### 2. フロントエンド (Vite + React) の起動
+---
+
+## 🔍 開発フロー (個別コンテナ不要派向け)
+
+バックエンドだけローカルで動かしたい場合：
 
 ```bash
-# フロントエンドディレクトリへ移動
-cd software/frontend
+# 依存インストール
+python -m venv .venv && source .venv/bin/activate
+pip install -r backend/requirements.txt
 
-# 依存パッケージのインストール
+# 環境変数 (SQLite にフォールバック)
+export DATABASE_URL=sqlite:///./dev.db
+uvicorn backend/app.main:app --reload --port 8000
+```
+
+フロントエンド：
+
+```bash
+cd frontend
 npm ci
-
-# (任意) API接続先を設定
-echo "VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1" > .env
-
-# 開発サーバーの起動（software/frontendディレクトリから実行）
-npm run dev
+VITE_API_BASE_URL=http://localhost:8000/api/v1 npm run dev
 ```
 
-> **注意**: フロントエンドの起動は必ず`software/frontend`ディレクトリから実行してください。プロジェクトルートから実行すると`package.json`が見つからないエラーが発生します。
+---
 
-> `http://127.0.0.1:5173` でアプリケーションにアクセスできます。
+## 🧪 テスト
 
-## 🚀 本番環境へのデプロイ
-
-アプリケーションを永続的なURLで公開するには、以下の手順に従ってください：
-
-### クイックデプロイ
+GitHub Actions が `pytest` を自動実行します。ローカルでは：
 
 ```bash
-# デプロイスクリプトを実行
-./deploy.sh
+pytest -q
 ```
 
-### 手動デプロイ
+---
 
-詳細な手順は [DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
+## 📡 End-to-End Flow
 
-- **フロントエンド**: Vercel (無料)
-- **バックエンド**: Railway (無料枠あり)
+1. ドローン画像を MinIO バケット `drone-images` にアップロード
+2. MinIO Event → `/api/v1/analysis/s3/webhook` を呼び出しジョブ作成
+3. RQ Worker が画像をダウンロード → `ml.analyzer` で区画診断
+4. 結果を PostGIS に永続化 (`analysis_jobs` / `area_tiles`)
+5. フロントエンドが `/dashboard/summary` などの API で KPI を取得し地図に描画
 
-### デプロイ後のURL
+---
 
-- 🌐 **フロントエンド**: `https://tokyo-tree-doctor-frontend.vercel.app`
-- 🔧 **バックエンド**: `https://tokyo-tree-doctor-backend.railway.app`
+## 🛠️ Troubleshooting
 
-## トラブルシューティング
-- `ModuleNotFoundError: No module named 'app'` → `--app-dir software/backend` を付けて起動してください。
-- ポート 8000 が使用中 → `--port 8001` など別ポートを指定。
-- バックエンドが頻繁にリロードされる → WatchFilesがフロントエンドの`node_modules`を監視している可能性があります。必要に応じて`--reload-dir software/backend`を追加して監視対象を制限してください。
-- フロントエンドで`package.json`が見つからない → `software/frontend`ディレクトリに移動してから`npm run dev`を実行してください。
+- `ModuleNotFoundError: No module named 'app'` → Docker を使うか `PYTHONPATH=. uvicorn ...`。
+- Postgres が ARM Mac で起動しない → `platform: linux/arm64` を compose に追記。
+- ポート 8000 がバッティング → `.env` で `API_PORT=8001` に変更し compose 側も合わせる。
 
-### アプリケーション概要
+---
 
-  - **バックエンド API**: `POST /api/v1/analysis/analyze` エンドポイントで樹木IDと位置情報を受け取り、診断結果（リスクスコア、原因分析など）を返します。
-  - **フロントエンド UI**: 地図（Leaflet）上に診断結果を色分けして表示し、過去の履歴も確認できるインターフェースを提供します。
+## 📜 License
 
-### ディレクトリ構造
-
-```sh
-software/
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── services/
-│   │   ├── schemas/
-│   │   └── main.py
-│   ├── tests/
-│   └── requirements.txt
-│
-└── frontend/
-    ├── src/
-    │   ├── api/
-    │   ├── components/
-    │   ├── App.jsx
-    │   └── main.jsx
-    │
-    │ # 2024-05 UI リファクタ
-    │ * `index.css` を削除し、全スタイルを `App.css` に統合。
-    │ * サイドバーがモバイル幅で自動折り畳み (Topbar トグルボタンで制御)。
-    ├── package.json
-    └── vite.config.js
-```
+MIT
