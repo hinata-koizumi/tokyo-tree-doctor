@@ -67,6 +67,6 @@ CORRELATION = {
 VARI_HEALTHY_MIN   = 0.17   # 健康の下限（論文準拠）
 VARI_WARN_MIN      = 0.06   # 要注意の下限（論文準拠）
 VARI_WARN_SPLIT    = 0.07   # ←要注意(0.06–0.16)の内部で危険に寄せる閾値（調整点）
-MIN_VEG_RATIO_VALID = 0.05  # ←植生被覆率がこれ未満ならN/A（3%）
+MIN_VEG_RATIO_VALID = 0.75  # ←植生被覆率がこれ未満ならN/A（3%）
 MIN_VEG_PIXELS_ABS  = 30    # ←有効にするための最低植生画素数（絶対）
 MIN_VEG_PIXELS_REL  = 0.002 # ←同（相対）：タイル画素の0.2%
