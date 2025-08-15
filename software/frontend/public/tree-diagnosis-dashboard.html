@@ -6,9 +6,6 @@
     <title>樹木診断ダッシュボード</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <style>
         * {
             margin: 0;
@@ -42,14 +39,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-
-        .park-select {
-            margin-left: auto;
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            font-size: 14px;
         }
 
         .topbar .logo {
@@ -447,16 +436,10 @@
 <body>
     <!-- トップバー -->
     <div class="topbar">
-        <h1>樹木診断ダッシュボード</h1>
-        <select id="parkSelect" class="park-select">
-            <option value="">公園を選択</option>
-            <option value="35.639485,139.4437722">桜ヶ丘公園</option>
-            <option value="35.6383006,139.3659497">長沼公園</option>
-            <option value="35.6398509,139.3788028">平山城址公園</option>
-            <option value="35.5977962,139.4155167">小山田緑地</option>
-            <option value="35.6062402,139.3658071">小山内裏公園</option>
-            <option value="35.6604652,139.2660075">八王子霊園</option>
-        </select>
+        <h1>
+            <div class="logo">🌳</div>
+            樹木診断ダッシュボード
+        </h1>
     </div>
 
     <!-- メインコンテナ -->
@@ -589,193 +572,70 @@
         </div>
     </div>
 
-    <script src="config.js"></script>
     <script>
         // Leafletが読み込まれるまで待機
         window.addEventListener('DOMContentLoaded', function() {
-            // 東京都域バウンディングボックス（伊豆諸島を除く大まかな範囲）
-            const tokyoBounds = L.latLngBounds([
-                35.20, 138.88  // 南西端
-            ], [
-                35.95, 140.10  // 北東端
-            ]);
+            // 地図の初期化
+            const map = L.map('map').setView([35.689, 139.692], 15);
 
-            // 地図の初期化（パンを東京都域に制限）
-            const map = L.map('map', {
-                maxBounds: tokyoBounds,      // パン制限
-                maxBoundsViscosity: 1.0,     // 端で外に出られないよう完全に固定
-                minZoom: 10                  // ズームアウトの下限を引き上げ
-            }).setView([35.63, 139.38], 12);
-
-            // 公園ドロップダウン選択で移動
-            const parkSelect = document.getElementById('parkSelect');
-            parkSelect.addEventListener('change', function() {
-                const val = this.value;
-                if (!val) return;
-                const [lat, lng] = val.split(',').map(Number);
-                map.setView([lat, lng], 15, {
-                    animate: true,
-                    duration: 0.5
-                });
-            });
-
-        // ベースレイヤー
-        const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // タイルレイヤーの追加
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
             maxZoom: 19
-        });
+        }).addTo(map);
 
-        const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles © Esri'
-        });
-
-        osm.addTo(map);
-
-        L.control.layers({ '標準': osm, '衛星写真': satellite }).addTo(map);
-
-        // 公園データの定義
-        const parks = [
-            {
-                name: '桜ヶ丘公園',
-                center: [35.639485, 139.4437722],
-                radius: 500,
-                treeCount: 12
-            },
-            {
-                name: '長沼公園',
-                center: [35.6383006, 139.3659497],
-                radius: 600,
-                treeCount: 8
-            },
-            {
-                name: '平山城址公園',
-                center: [35.6398509, 139.3788028],
-                radius: 550,
-                treeCount: 15
-            },
-            {
-                name: '小山田緑地',
-                center: [35.5977962, 139.4155167],
-                radius: 700,
-                treeCount: 10
-            },
-            {
-                name: '小山内裏公園',
-                center: [35.6062402, 139.3658071],
-                radius: 450,
-                treeCount: 7
-            },
-            {
-                name: '八王子霊園',
-                center: [35.6604652, 139.2660075],
-                radius: 800,
-                treeCount: 13
-            }
-        ];
-
-        // 公園エリアの描画
-        parks.forEach(park => {
-            // 公園エリアを円で表現
-            const parkCircle = L.circle(park.center, {
-                color: '#16a34a',
-                fillColor: '#86efac',
-                fillOpacity: 0.2,
-                weight: 2,
-                radius: park.radius
-            }).addTo(map);
-
-            // 公園名のラベルを追加
-            const parkIcon = L.divIcon({
-                className: 'park-label',
-                html: `
-                    <div style="
-                        background: rgba(255, 255, 255, 0.95);
-                        padding: 6px 12px;
-                        border-radius: 8px;
-                        border: 2px solid #16a34a;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                        font-weight: 600;
-                        color: #16a34a;
-                        white-space: nowrap;
-                        font-size: 13px;
-                    ">
-                        🌳 ${park.name}
-                        <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">
-                            診断対象: ${park.treeCount}本
-                        </div>
-                    </div>
-                `,
-                iconSize: null,
-                iconAnchor: [60, 20]
-            });
-
-            L.marker(park.center, { icon: parkIcon }).addTo(map);
-
-            // ポップアップ情報を追加
-            parkCircle.bindPopup(`
-                <div style="padding: 8px;">
-                    <h3 style="margin: 0 0 8px 0; color: #16a34a; font-size: 16px;">
-                        ${park.name}
-                    </h3>
-                    <div style="font-size: 14px; color: #6b7280;">
-                        診断対象樹木: ${park.treeCount}本<br>
-                        エリア範囲: 半径${park.radius}m
-                    </div>
-                </div>
-            `);
-        });
-
-        // サンプルデータ - 各公園に樹木を配置（VARI値に基づく）
+        // サンプルデータ
         const treeData = [
-            // 桜ヶ丘公園の樹木（VARI値が低いほど危険）
-            { id: 'TR-2024-045', lat: 35.6395, lng: 139.4438, status: 'danger', vari: 0.042, age: 85, height: 22, recommendation: '即座の伐採を推奨', park: '桜ヶ丘公園' },
-            { id: 'TR-2024-018', lat: 35.6393, lng: 139.4435, status: 'danger', vari: 0.046, age: 72, height: 18, recommendation: '即座の伐採を推奨', park: '桜ヶ丘公園' },
-            { id: 'TR-2024-091', lat: 35.6397, lng: 139.4440, status: 'warning', vari: 0.296, age: 68, height: 16, recommendation: '3ヶ月以内の再診断', park: '桜ヶ丘公園' },
-            { id: 'TR-2024-001', lat: 35.6392, lng: 139.4433, status: 'safe', vari: 0.041, age: 35, height: 12, recommendation: '問題なし', park: '桜ヶ丘公園' },
+            // 危険な樹木
+            { id: 'TR-2024-045', lat: 35.6895, lng: 139.6917, status: 'danger', vari: 0.12, age: 85, height: 22, recommendation: '即座の伐採を推奨' },
+            { id: 'TR-2024-018', lat: 35.6885, lng: 139.6925, status: 'danger', vari: 0.18, age: 72, height: 18, recommendation: '即座の伐採を推奨' },
+            { id: 'TR-2024-091', lat: 35.6888, lng: 139.6912, status: 'danger', vari: 0.15, age: 78, height: 20, recommendation: '緊急点検が必要' },
+            { id: 'TR-2024-104', lat: 35.6892, lng: 139.6908, status: 'danger', vari: 0.20, age: 65, height: 19, recommendation: '即座の対応が必要' },
+            { id: 'TR-2024-127', lat: 35.6897, lng: 139.6903, status: 'danger', vari: 0.14, age: 82, height: 23, recommendation: '伐採を検討' },
+            { id: 'TR-2024-135', lat: 35.6883, lng: 139.6928, status: 'danger', vari: 0.19, age: 70, height: 17, recommendation: '緊急対応が必要' },
+            { id: 'TR-2024-142', lat: 35.6886, lng: 139.6922, status: 'danger', vari: 0.16, age: 75, height: 21, recommendation: '即座の点検が必要' },
+            { id: 'TR-2024-156', lat: 35.6894, lng: 139.6915, status: 'danger', vari: 0.13, age: 88, height: 24, recommendation: '伐採を強く推奨' },
             
-            // 長沼公園の樹木
-            { id: 'TR-2024-104', lat: 35.6385, lng: 139.3660, status: 'danger', vari: 0.221, age: 65, height: 19, recommendation: '即座の対応が必要', park: '長沼公園' },
-            { id: 'TR-2024-032', lat: 35.6381, lng: 139.3658, status: 'warning', vari: 0.037, age: 68, height: 16, recommendation: '3ヶ月以内の再診断', park: '長沼公園' },
-            { id: 'TR-2024-089', lat: 35.6384, lng: 139.3662, status: 'warning', vari: 0.038, age: 55, height: 15, recommendation: '定期監視を継続', park: '長沼公園' },
-            { id: 'TR-2024-002', lat: 35.6380, lng: 139.3656, status: 'safe', vari: 0.031, age: 28, height: 10, recommendation: '健全な状態', park: '長沼公園' },
+            // 要注意の樹木
+            { id: 'TR-2024-032', lat: 35.6905, lng: 139.6905, status: 'warning', vari: 0.25, age: 68, height: 16, recommendation: '3ヶ月以内の再診断' },
+            { id: 'TR-2024-089', lat: 35.6875, lng: 139.6935, status: 'warning', vari: 0.28, age: 55, height: 15, recommendation: '定期監視を継続' },
+            { id: 'TR-2024-067', lat: 35.6915, lng: 139.6895, status: 'warning', vari: 0.32, age: 48, height: 14, recommendation: '6ヶ月後に再評価' },
+            { id: 'TR-2024-023', lat: 35.6878, lng: 139.6932, status: 'warning', vari: 0.30, age: 52, height: 15, recommendation: '枝の剪定を検討' },
+            { id: 'TR-2024-078', lat: 35.6912, lng: 139.6898, status: 'warning', vari: 0.35, age: 45, height: 13, recommendation: '経過観察を継続' },
+            { id: 'TR-2024-056', lat: 35.6902, lng: 139.6902, status: 'warning', vari: 0.27, age: 60, height: 17, recommendation: '次回診断時に重点確認' },
+            { id: 'TR-2024-034', lat: 35.6908, lng: 139.6892, status: 'warning', vari: 0.33, age: 42, height: 12, recommendation: '成長状態を監視' },
+            { id: 'TR-2024-098', lat: 35.6872, lng: 139.6938, status: 'warning', vari: 0.29, age: 58, height: 16, recommendation: '土壌改良を検討' },
+            { id: 'TR-2024-112', lat: 35.6918, lng: 139.6888, status: 'warning', vari: 0.31, age: 50, height: 14, recommendation: '定期的な観察が必要' },
+            { id: 'TR-2024-076', lat: 35.6882, lng: 139.6918, status: 'warning', vari: 0.34, age: 46, height: 13, recommendation: '成長促進処置を検討' },
+            { id: 'TR-2024-043', lat: 35.6898, lng: 139.6907, status: 'warning', vari: 0.26, age: 62, height: 18, recommendation: '枝の整理が必要' },
+            { id: 'TR-2024-021', lat: 35.6876, lng: 139.6930, status: 'warning', vari: 0.36, age: 40, height: 11, recommendation: '栄養状態の改善' },
+            { id: 'TR-2024-087', lat: 35.6910, lng: 139.6900, status: 'warning', vari: 0.28, age: 56, height: 15, recommendation: '病害虫の予防処置' },
+            { id: 'TR-2024-065', lat: 35.6904, lng: 139.6896, status: 'warning', vari: 0.32, age: 47, height: 13, recommendation: '土壌水分の管理' },
+            { id: 'TR-2024-054', lat: 35.6880, lng: 139.6920, status: 'warning', vari: 0.30, age: 53, height: 14, recommendation: '周辺環境の整備' },
             
-            // 平山城址公園の樹木
-            { id: 'TR-2024-127', lat: 35.6399, lng: 139.3788, status: 'danger', vari: 0.046, age: 82, height: 23, recommendation: '伐採を検討', park: '平山城址公園' },
-            { id: 'TR-2024-135', lat: 35.6397, lng: 139.3790, status: 'danger', vari: 0.084, age: 70, height: 17, recommendation: '緊急対応が必要', park: '平山城址公園' },
-            { id: 'TR-2024-067', lat: 35.6401, lng: 139.3786, status: 'warning', vari: 0.132, age: 48, height: 14, recommendation: '6ヶ月後に再評価', park: '平山城址公園' },
-            { id: 'TR-2024-003', lat: 35.6396, lng: 139.3785, status: 'safe', vari: 0.085, age: 32, height: 11, recommendation: '良好', park: '平山城址公園' },
-            
-            // 小山田緑地の樹木
-            { id: 'TR-2024-142', lat: 35.5978, lng: 139.4155, status: 'danger', vari: 0.040, age: 75, height: 21, recommendation: '即座の点検が必要', park: '小山田緑地' },
-            { id: 'TR-2024-023', lat: 35.5976, lng: 139.4157, status: 'warning', vari: 0.038, age: 52, height: 15, recommendation: '枝の剪定を検討', park: '小山田緑地' },
-            { id: 'TR-2024-078', lat: 35.5980, lng: 139.4153, status: 'warning', vari: 0.039, age: 45, height: 13, recommendation: '経過観察を継続', park: '小山田緑地' },
-            { id: 'TR-2024-004', lat: 35.5975, lng: 139.4156, status: 'safe', vari: 0.031, age: 30, height: 10, recommendation: '問題なし', park: '小山田緑地' },
-            
-            // 小山内裏公園の樹木
-            { id: 'TR-2024-156', lat: 35.6063, lng: 139.3658, status: 'danger', vari: 0.037, age: 88, height: 24, recommendation: '伐採を強く推奨', park: '小山内裏公園' },
-            { id: 'TR-2024-056', lat: 35.6061, lng: 139.3660, status: 'warning', vari: 0.038, age: 60, height: 17, recommendation: '次回診断時に重点確認', park: '小山内裏公園' },
-            { id: 'TR-2024-005', lat: 35.6064, lng: 139.3656, status: 'safe', vari: 0.036, age: 25, height: 9, recommendation: '非常に健全', park: '小山内裏公園' },
-            
-            // 八王子霊園の樹木（実際のVARI値を使用）
-            { id: 'TR-2024-098', lat: 35.6605, lng: 139.2660, status: 'warning', vari: 0.030, age: 58, height: 16, recommendation: '土壌改良を検討', park: '八王子霊園' },
-            { id: 'TR-2024-112', lat: 35.6603, lng: 139.2662, status: 'warning', vari: 0.037, age: 50, height: 14, recommendation: '定期的な観察が必要', park: '八王子霊園' },
-            { id: 'TR-2024-076', lat: 35.6607, lng: 139.2658, status: 'warning', vari: 0.038, age: 46, height: 13, recommendation: '成長促進処置を検討', park: '八王子霊園' },
-            { id: 'TR-2024-006', lat: 35.6602, lng: 139.2661, status: 'safe', vari: 0.031, age: 33, height: 11, recommendation: '良好な状態', park: '八王子霊園' },
-            { id: 'TR-2024-007', lat: 35.6606, lng: 139.2659, status: 'safe', vari: 0.032, age: 38, height: 12, recommendation: '健全', park: '八王子霊園' },
-            
-            // 追加の八王子霊園データ（実際のVARI値）
-            { id: 'TR-2024-008', lat: 35.6599, lng: 139.2610, status: 'danger', vari: 0.042, age: 45, height: 15, recommendation: '緊急点検が必要', park: '八王子霊園' },
-            { id: 'TR-2024-009', lat: 35.6597, lng: 139.2612, status: 'danger', vari: 0.046, age: 52, height: 18, recommendation: '即座の対応が必要', park: '八王子霊園' },
-            { id: 'TR-2024-010', lat: 35.6595, lng: 139.2614, status: 'warning', vari: 0.296, age: 38, height: 14, recommendation: '定期監視を継続', park: '八王子霊園' },
-            { id: 'TR-2024-011', lat: 35.6593, lng: 139.2616, status: 'warning', vari: 0.221, age: 42, height: 16, recommendation: '枝の剪定を検討', park: '八王子霊園' },
-            { id: 'TR-2024-012', lat: 35.6591, lng: 139.2618, status: 'safe', vari: 0.037, age: 29, height: 11, recommendation: '問題なし', park: '八王子霊園' }
+            // 健全な樹木（一部のみ表示）
+            { id: 'TR-2024-001', lat: 35.6900, lng: 139.6910, status: 'safe', vari: 0.68, age: 35, height: 12, recommendation: '問題なし' },
+            { id: 'TR-2024-002', lat: 35.6890, lng: 139.6920, status: 'safe', vari: 0.72, age: 28, height: 10, recommendation: '健全な状態' },
+            { id: 'TR-2024-003', lat: 35.6880, lng: 139.6915, status: 'safe', vari: 0.75, age: 32, height: 11, recommendation: '良好' },
+            { id: 'TR-2024-004', lat: 35.6895, lng: 139.6925, status: 'safe', vari: 0.70, age: 30, height: 10, recommendation: '問題なし' },
+            { id: 'TR-2024-005', lat: 35.6885, lng: 139.6910, status: 'safe', vari: 0.78, age: 25, height: 9, recommendation: '非常に健全' },
+            { id: 'TR-2024-006', lat: 35.6905, lng: 139.6915, status: 'safe', vari: 0.73, age: 33, height: 11, recommendation: '良好な状態' },
+            { id: 'TR-2024-007', lat: 35.6875, lng: 139.6925, status: 'safe', vari: 0.69, age: 38, height: 12, recommendation: '健全' },
+            { id: 'TR-2024-008', lat: 35.6910, lng: 139.6905, status: 'safe', vari: 0.76, age: 27, height: 9, recommendation: '問題なし' },
+            { id: 'TR-2024-009', lat: 35.6870, lng: 139.6930, status: 'safe', vari: 0.71, age: 31, height: 10, recommendation: '良好' },
+            { id: 'TR-2024-010', lat: 35.6915, lng: 139.6910, status: 'safe', vari: 0.74, age: 29, height: 10, recommendation: '健全な成長' },
+            { id: 'TR-2024-011', lat: 35.6888, lng: 139.6905, status: 'safe', vari: 0.77, age: 26, height: 9, recommendation: '非常に良好' },
+            { id: 'TR-2024-012', lat: 35.6892, lng: 139.6895, status: 'safe', vari: 0.70, age: 34, height: 11, recommendation: '問題なし' },
+            { id: 'TR-2024-013', lat: 35.6878, lng: 139.6908, status: 'safe', vari: 0.72, age: 30, height: 10, recommendation: '健全' },
+            { id: 'TR-2024-014', lat: 35.6907, lng: 139.6920, status: 'safe', vari: 0.75, age: 28, height: 9, recommendation: '良好な状態' },
+            { id: 'TR-2024-015', lat: 35.6873, lng: 139.6912, status: 'safe', vari: 0.68, age: 36, height: 12, recommendation: '問題なし' }
         ];
 
         // マーカーグループ
         const markerGroups = {
-            danger: L.markerClusterGroup({ disableClusteringAtZoom: 17 }),
-            warning: L.markerClusterGroup({ disableClusteringAtZoom: 17 }),
-            safe: L.markerClusterGroup({ disableClusteringAtZoom: 17 })
+            danger: L.layerGroup(),
+            warning: L.layerGroup(),
+            safe: L.layerGroup()
         };
 
         // マーカーの作成
@@ -792,10 +652,6 @@
                 <div class="popup-content">
                     <div class="popup-header">樹木 ${tree.id}</div>
                     <div class="popup-details">
-                        <div class="popup-detail-row">
-                            <span class="popup-detail-label">所在地</span>
-                            <span class="popup-detail-value">${tree.park || '未設定'}</span>
-                        </div>
                         <div class="popup-detail-row">
                             <span class="popup-detail-label">状態</span>
                             <span class="popup-detail-value" style="color: ${
@@ -863,7 +719,7 @@
 
         // 特定の樹木にフォーカス
         function focusTree(lat, lng) {
-            map.setView([lat, lng], 16, {
+            map.setView([lat, lng], 18, {
                 animate: true,
                 duration: 0.5
             });

@@ -82,7 +82,30 @@ npm run dev
 
 > `http://127.0.0.1:5173` でアプリケーションにアクセスできます。
 
-トラブルシューティング:
+## 🚀 本番環境へのデプロイ
+
+アプリケーションを永続的なURLで公開するには、以下の手順に従ってください：
+
+### クイックデプロイ
+
+```bash
+# デプロイスクリプトを実行
+./deploy.sh
+```
+
+### 手動デプロイ
+
+詳細な手順は [DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
+
+- **フロントエンド**: Vercel (無料)
+- **バックエンド**: Railway (無料枠あり)
+
+### デプロイ後のURL
+
+- 🌐 **フロントエンド**: `https://tokyo-tree-doctor-frontend.vercel.app`
+- 🔧 **バックエンド**: `https://tokyo-tree-doctor-backend.railway.app`
+
+## トラブルシューティング
 - `ModuleNotFoundError: No module named 'app'` → `--app-dir software/backend` を付けて起動してください。
 - ポート 8000 が使用中 → `--port 8001` など別ポートを指定。
 - バックエンドが頻繁にリロードされる → WatchFilesがフロントエンドの`node_modules`を監視している可能性があります。必要に応じて`--reload-dir software/backend`を追加して監視対象を制限してください。
@@ -113,6 +136,10 @@ software/
     │   ├── components/
     │   ├── App.jsx
     │   └── main.jsx
+    │
+    │ # 2024-05 UI リファクタ
+    │ * `index.css` を削除し、全スタイルを `App.css` に統合。
+    │ * サイドバーがモバイル幅で自動折り畳み (Topbar トグルボタンで制御)。
     ├── package.json
     └── vite.config.js
 ```
