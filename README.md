@@ -32,13 +32,13 @@ open http://localhost:8000/docs        # FastAPI (Swagger UI)
 open http://localhost:9001             # MinIO Console (ID/PW: minio / minio123)
 ```
 
-起動するサービス | ポート | 役割
-+----------------|-------|----------------------------------
-API (FastAPI)   | 8000  | `/api/v1/*` REST エンドポイント
-RQ Worker       | —     | 画像解析の非同期ジョブ実行
-PostgreSQL + PostGIS | 5432 | 診断結果 (`analysis_jobs`, `area_tiles`) 永続化
-Redis           | 6379  | ジョブキュー
-MinIO           | 9000/9001 | S3 互換オブジェクトストレージ（画像アップロード）
+ 起動するサービス | ポート | 役割 |
+ |----------------|-------|----------------------------------|
+ | API (FastAPI)   | 8000  | `/api/v1/*` REST エンドポイント |
+ | RQ Worker       | —     | 画像解析の非同期ジョブ実行 |
+ | PostgreSQL + PostGIS | 5432 | 診断結果 (`analysis_jobs`, `area_tiles`) 永続化 |
+ | Redis           | 6379  | ジョブキュー |
+ | MinIO           | 9000/9001 | S3 互換オブジェクトストレージ（画像アップロード） |
 
 ---
 
