@@ -48,15 +48,18 @@ def analyze_job(job_uuid: str):  # noqa: WPS231
             "tile_side_m": 20.0,
         }
         area_input = AreaAnalysisInput(image_b64=img_b64, meta=meta)  # type: ignore[arg-type]
-        result = get_area_analysis.__wrapped__(area_input)  # sync call inside worker
+        import asyncio
+        result = asyncio.run(get_area_analysis(area_input))  # execute async function
 
         tiles: List[AreaTile] = []
         for t in result.tiles:
+            import json
             tile = AreaTile(
                 job_id=job.id,
                 class_label=t.class_label,
                 veg_ratio=str(t.veg_ratio),
-                stats=t.model_dump(),
+                polygon='POLYGON EMPTY',
+                stats=json.dumps(t.model_dump()),
             )
             tiles.append(tile)
         session.add_all(tiles)

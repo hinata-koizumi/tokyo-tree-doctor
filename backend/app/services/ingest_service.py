@@ -13,8 +13,9 @@ import cv2
 try:
     from rq import Queue  # type: ignore
     from redis import Redis  # type: ignore
-
-    redis_conn = Redis.from_url("redis://localhost:6379/0")
+    import os
+    redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    redis_conn = Redis.from_url(redis_url)
     queue: Queue | None = Queue("analysis", connection=redis_conn)
 except ModuleNotFoundError:  # fallback for test env
     Queue = None  # type: ignore
