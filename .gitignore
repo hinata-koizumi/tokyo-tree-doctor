@@ -1,17 +1,5 @@
-# Python
+# Local virtual environments
 .venv/
-__pycache__/
-*.pyc
-software/__pycache__/
 
-# Node / Frontend
-software/frontend/node_modules/
-software/frontend/.env
-software/frontend/dist/
-
-# OS / Editor
-.DS_Store
-.vscode/
-.cursor/
-.idea/
-
+# pytest cache
+.pytest_cache/

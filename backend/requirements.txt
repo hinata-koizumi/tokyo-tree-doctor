@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+httpx
+pydantic-settings
+pytest
+numpy
+opencv-python-headless
+requests
+SQLAlchemy>=2.0
+geoalchemy2
+psycopg2-binary
+redis
+rq
+

@@ -1,3 +1,3 @@
-from .predict import predict_risk_score
+from .analyzer import analyze_image_tiles  # noqa: F401
 
-__all__ = ["predict_risk_score"]
+__all__ = ["analyze_image_tiles"]
