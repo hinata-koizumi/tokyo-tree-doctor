@@ -7,7 +7,7 @@ AIとドローン技術を活用した、樹木の健康状態を監視・診断
 
 ---
 
-## 🔖 Repository Layout
+## Repository Layout
 
 ```text
 tokyo-tree-doctor/
@@ -19,7 +19,7 @@ tokyo-tree-doctor/
 
 ---
 
-## 🚀 Quick Start (Docker Compose)
+## Quick Start (Docker Compose)
 
 ローカル PC に Docker / Docker Compose が入っていれば、**ワンコマンドで全サービスが起動**します。
 
@@ -42,7 +42,7 @@ MinIO           | 9000/9001 | S3 互換オブジェクトストレージ（画�
 
 ---
 
-## 🔍 開発フロー (個別コンテナ不要派向け)
+## 開発フロー (個別コンテナ不要派向け)
 
 バックエンドだけローカルで動かしたい場合：
 
@@ -66,7 +66,7 @@ VITE_API_BASE_URL=http://localhost:8000/api/v1 npm run dev
 
 ---
 
-## 🧪 テスト
+## テスト
 
 GitHub Actions が `pytest` を自動実行します。ローカルでは：
 
@@ -76,7 +76,7 @@ pytest -q
 
 ---
 
-## 📡 End-to-End Flow
+## End-to-End Flow
 
 1. ドローン画像を MinIO バケット `drone-images` にアップロード
 2. MinIO Event → `/api/v1/analysis/s3/webhook` を呼び出しジョブ作成
@@ -86,7 +86,7 @@ pytest -q
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 - `ModuleNotFoundError: No module named 'app'` → Docker を使うか `PYTHONPATH=. uvicorn ...`。
 - Postgres が ARM Mac で起動しない → `platform: linux/arm64` を compose に追記。
@@ -94,6 +94,6 @@ pytest -q
 
 ---
 
-## 📜 License
+## License
 
 MIT
