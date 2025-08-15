@@ -1,29 +1,33 @@
 from __future__ import annotations
 
+import os
 import uuid
 from datetime import datetime
 from typing import List
 
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import UUID
+
+# JSON type compatibility (PostgreSQL vs SQLite)
 try:
     from sqlalchemy.dialects.postgresql import JSONB  # type: ignore
+
     JSONType = JSONB
-except ImportError:
+except ImportError:  # SQLite fallback
     from sqlalchemy import JSON as JSONType  # type: ignore
+
 from sqlalchemy.orm import relationship
+
+# Optional spatial column support (PostGIS only)
 try:
     from geoalchemy2 import Geometry  # type: ignore
-    HAS_GEO = True
-except ModuleNotFoundError:  # fallback for tests without PostGIS
-    from sqlalchemy import String  # type: ignore
 
-    class _DummyGeometry(String):
-        def __init__(self, *args, **kwargs):  # noqa: D401
-            super().__init__()
+    _geo_available = True
+except ModuleNotFoundError:
+    _geo_available = False
 
-    Geometry = _DummyGeometry  # type: ignore
-    HAS_GEO = False
+# Enable geometry column only when explicitly requested (e.g., production PostGIS)
+USE_GEO = _geo_available and os.getenv("ENABLE_POSTGIS", "0") == "1"
 
 from app.db.base import Base
 
@@ -51,7 +55,7 @@ class AreaTile(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     job_id = Column(UUID(as_uuid=True), ForeignKey("analysis_jobs.id", ondelete="CASCADE"))
 
-    if HAS_GEO:
+    if USE_GEO:
         polygon = Column(Geometry("POLYGON", srid=4326), nullable=True)
     else:
         polygon = Column(String, nullable=True)
