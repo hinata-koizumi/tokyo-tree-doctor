@@ -1,0 +1,82 @@
+[
+  {
+    "region_id": "tokyo_central",
+    "station_id": "47646",
+    "year": 2023,
+    "coordinates": [
+      35.6762,
+      139.6503
+    ],
+    "weather_score": 5.0,
+    "forest_score": 5,
+    "total_risk_score": 5.0,
+    "risk_level": "最高リスク",
+    "details": {
+      "weather_analysis": {
+        "year": 2023,
+        "station_id": "47646",
+        "summer_breeding_score": 5,
+        "winter_overwintering_score": 5,
+        "weather_score": 5.0,
+        "effective_accumulated_temperature": 2126.514149319163,
+        "cold_days_count": 16
+      },
+      "forest_analysis": {
+        "forest_score": 5,
+        "large_tree_indicator": 0.8995365751931179,
+        "susceptible_species_indicator": 1.0,
+        "forest_structure_indicator": 0.9968051118210862,
+        "total_trees": 1000,
+        "oak_trees": 503,
+        "large_oak_trees": 313,
+        "oak_basal_area_total": 77.57399066715796,
+        "large_oak_basal_area_total": 69.78064188879816
+      },
+      "calculation_method": "weighted_average",
+      "weights": {
+        "weather_score": 0.5,
+        "forest_score": 0.5
+      }
+    }
+  },
+  {
+    "region_id": "tokyo_west",
+    "station_id": "47646",
+    "year": 2023,
+    "coordinates": [
+      35.6895,
+      139.6917
+    ],
+    "weather_score": 5.0,
+    "forest_score": 5,
+    "total_risk_score": 5.0,
+    "risk_level": "最高リスク",
+    "details": {
+      "weather_analysis": {
+        "year": 2023,
+        "station_id": "47646",
+        "summer_breeding_score": 5,
+        "winter_overwintering_score": 5,
+        "weather_score": 5.0,
+        "effective_accumulated_temperature": 2126.514149319163,
+        "cold_days_count": 16
+      },
+      "forest_analysis": {
+        "forest_score": 5,
+        "large_tree_indicator": 0.9076688219871033,
+        "susceptible_species_indicator": 1.0,
+        "forest_structure_indicator": 0.9961240310077519,
+        "total_trees": 800,
+        "oak_trees": 403,
+        "large_oak_trees": 258,
+        "oak_basal_area_total": 63.70889696538425,
+        "large_oak_basal_area_total": 57.826579458668064
+      },
+      "calculation_method": "weighted_average",
+      "weights": {
+        "weather_score": 0.5,
+        "forest_score": 0.5
+      }
+    }
+  }
+]

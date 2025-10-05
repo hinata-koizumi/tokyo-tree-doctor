@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "station_id": "47646",
+    "year": 2023,
+    "generated_at": "2025-08-24T03:14:55.479107",
+    "version": "1.0"
+  },
+  "risk_score": {
+    "weather_score": 5.0,
+    "forest_score": 5,
+    "total_risk_score": 5.0,
+    "risk_level": "最高リスク"
+  },
+  "recommendations": [
+    "緊急の対策が必要です",
+    "専門家による詳細調査を実施してください",
+    "予防的伐採の検討",
+    "定期的な監視体制の構築"
+  ],
+  "details": {
+    "weather_analysis": {
+      "year": 2023,
+      "station_id": "47646",
+      "summer_breeding_score": 5,
+      "winter_overwintering_score": 5,
+      "weather_score": 5.0,
+      "effective_accumulated_temperature": 2126.514149319163,
+      "cold_days_count": 16
+    },
+    "forest_analysis": {
+      "forest_score": 5,
+      "large_tree_indicator": 0.8995365751931179,
+      "susceptible_species_indicator": 1.0,
+      "forest_structure_indicator": 0.9968051118210862,
+      "total_trees": 1000,
+      "oak_trees": 503,
+      "large_oak_trees": 313,
+      "oak_basal_area_total": 77.57399066715796,
+      "large_oak_basal_area_total": 69.78064188879816
+    },
+    "calculation_method": "weighted_average",
+    "weights": {
+      "weather_score": 0.5,
+      "forest_score": 0.5
+    }
+  }
+}

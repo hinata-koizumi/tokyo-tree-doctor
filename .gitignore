@@ -1,5 +1,42 @@
-# Local virtual environments
-.venv/
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# pytest cache
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+.eggs/
 .pytest_cache/
+.cache/
+.venv/
+venv/
+backend/venv/
+
+# Node/Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs & PIDs
+*.log
+*.pid
+
+# Environment
+.env
+.env.*
+
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Editor
+.vscode/
+.idea/
