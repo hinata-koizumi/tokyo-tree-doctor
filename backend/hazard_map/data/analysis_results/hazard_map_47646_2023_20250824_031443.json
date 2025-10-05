@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "station_id": "47646",
+    "year": 2023,
+    "generated_at": "2025-08-24T03:14:43.465526",
+    "version": "1.0"
+  },
+  "risk_score": {
+    "weather_score": 5.0,
+    "forest_score": 5,
+    "total_risk_score": 5.0,
+    "risk_level": "最高リスク"
+  },
+  "recommendations": [
+    "緊急の対策が必要です",
+    "専門家による詳細調査を実施してください",
+    "予防的伐採の検討",
+    "定期的な監視体制の構築"
+  ],
+  "details": {
+    "weather_analysis": {
+      "year": 2023,
+      "station_id": "47646",
+      "summer_breeding_score": 5,
+      "winter_overwintering_score": 5,
+      "weather_score": 5.0,
+      "effective_accumulated_temperature": 2126.514149319163,
+      "cold_days_count": 
